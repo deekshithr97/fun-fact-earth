@@ -13,6 +13,7 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            overflow: hidden;
         }
 
         .container {
@@ -21,12 +22,18 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
         }
 
         .fact-box {
             margin: 20px 0;
             font-size: 1.2em;
             color: #333;
+            transition: transform 0.5s;
+        }
+
+        .fact-box.show {
+            transform: scale(1.1);
         }
 
         button {
@@ -37,16 +44,37 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         button:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .image-container {
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Fun Fact Generator</h1>
+        <div class="image-container">
+            <img id="factImage" src="https://via.placeholder.com/300" alt="Fun Fact Image">
+        </div>
         <div id="fact" class="fact-box">
             Click the button to see a fun fact!
         </div>
@@ -54,21 +82,29 @@
     </div>
     <script>
         const facts = [
-            "Honey never spoils.",
-            "A day on Venus is longer than a year on Venus.",
-            "Bananas are berries, but strawberries aren't.",
-            "There are more stars in the universe than grains of sand on Earth.",
-            "Octopuses have three hearts.",
-            "A group of flamingos is called a 'flamboyance'.",
-            "The Eiffel Tower can be 15 cm taller during the summer.",
-            "Some cats are allergic to humans.",
-            "The unicorn is the national animal of Scotland.",
-            "A jiffy is an actual unit of time."
+            { text: "Honey never spoils.", image: "https://via.placeholder.com/300/FFDD44" },
+            { text: "A day on Venus is longer than a year on Venus.", image: "https://via.placeholder.com/300/FF8844" },
+            { text: "Bananas are berries, but strawberries aren't.", image: "https://via.placeholder.com/300/44FF88" },
+            { text: "There are more stars in the universe than grains of sand on Earth.", image: "https://via.placeholder.com/300/4488FF" },
+            { text: "Octopuses have three hearts.", image: "https://via.placeholder.com/300/FF4488" },
+            { text: "A group of flamingos is called a 'flamboyance'.", image: "https://via.placeholder.com/300/88FF44" },
+            { text: "The Eiffel Tower can be 15 cm taller during the summer.", image: "https://via.placeholder.com/300/8844FF" },
+            { text: "Some cats are allergic to humans.", image: "https://via.placeholder.com/300/FF8844" },
+            { text: "The unicorn is the national animal of Scotland.", image: "https://via.placeholder.com/300/44FFDD" },
+            { text: "A jiffy is an actual unit of time.", image: "https://via.placeholder.com/300/DD44FF" }
         ];
 
         document.getElementById('generateFact').addEventListener('click', function() {
             const randomIndex = Math.floor(Math.random() * facts.length);
-            document.getElementById('fact').textContent = facts[randomIndex];
+            const fact = facts[randomIndex];
+            const factBox = document.getElementById('fact');
+            const factImage = document.getElementById('factImage');
+
+            factBox.textContent = fact.text;
+            factImage.src = fact.image;
+
+            factBox.classList.remove('show');
+            setTimeout(() => factBox.classList.add('show'), 10);
         });
     </script>
 </body>
